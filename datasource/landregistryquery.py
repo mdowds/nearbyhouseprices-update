@@ -2,7 +2,6 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 
-# TODO add unit tests
 class LandRegistryQuery:
 
     headers = """

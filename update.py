@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import date
 
 from SPARQLWrapper import SPARQLWrapper
 from google.cloud import firestore
@@ -29,9 +30,12 @@ def update_price_data(db: firestore.Client, sparql: SPARQLWrapper):
 
 
 if __name__ == '__main__':
-    sparql = SPARQLWrapper("http://landregistry.data.gov.uk/landregistry/query")
-    key = json.loads(os.environ['GCLOUD_SA_KEY'])
-    credentials = service_account.Credentials.from_service_account_info(key)
+    if date.today().weekday == 6:
+        sparql = SPARQLWrapper("http://landregistry.data.gov.uk/landregistry/query")
+        key = json.loads(os.environ['GCLOUD_SA_KEY'])
+        credentials = service_account.Credentials.from_service_account_info(key)
 
-    db = firestore.Client(project=os.environ['GCLOUD_PROJECT_ID'], credentials=credentials)
-    update_price_data(db, sparql)
+        db = firestore.Client(project=os.environ['GCLOUD_PROJECT_ID'], credentials=credentials)
+        update_price_data(db, sparql)
+    else:
+        print('Not a Sunday, so not running update script')

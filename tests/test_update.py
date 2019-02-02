@@ -18,7 +18,8 @@ class UpdateTests(TestCase):
         update_price_data(self.mock_db, mock_sparql)
 
         self.assertEqual('json', mock_sparql.return_format)
-        self.assertEqual(mock_sparql.expected_price_query('AB10'), mock_sparql.queries[0])
+        self.assertOutcodeInQuery('AB10', mock_sparql.queries[1])
+        self.assertQuerySelectsOverall(mock_sparql.queries[1])
 
         results = self.mock_db.collection('outcodes').document('AB10').get().to_dict()
 
@@ -42,7 +43,8 @@ class UpdateTests(TestCase):
         update_price_data(self.mock_db, mock_sparql)
 
         self.assertEqual('json', mock_sparql.return_format)
-        self.assertEqual(mock_sparql.expected_types_query('AB10'), mock_sparql.queries[1])
+        self.assertOutcodeInQuery('AB10', mock_sparql.queries[1])
+        self.assertQuerySelectsByType(mock_sparql.queries[1])
 
         results = self.mock_db.collection('outcodes').document('AB10').get().to_dict()
 
@@ -59,3 +61,18 @@ class UpdateTests(TestCase):
 
         self.assertEqual(len(outcodes) * 2, mock_sparql.request_count)
         self.assertEqual(len(outcodes), len(self.mock_db.collection('outcodes').get()))
+
+    def assertOutcodeInQuery(self, outcode, query):
+        self.assertIn(f'_:b1<http://www.w3.org/1999/02/22-rdf-syntax-ns#first>"({outcode})".', query)
+
+    def assertQuerySelectsOverall(self, query):
+        self.assertIn(
+            'SELECT(AVG(?ppd_pricePaid)as?averagePrice)(COUNT(?item)as?transactionCount)',
+            query
+        )
+
+    def assertQuerySelectsByType(self, query):
+        self.assertIn(
+            'SELECT(AVG(?ppd_pricePaid)as?averagePrice)(COUNT(?item)as?transactionCount)?ppd_propertyType',
+            query
+        )

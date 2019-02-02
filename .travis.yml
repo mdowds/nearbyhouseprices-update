@@ -1,0 +1,11 @@
+language: python
+python:
+- 3.6
+install: pip install -r requirements.txt
+script: python -m unittest discover tests -t /
+deploy:
+  provider: heroku
+  api_key:
+    secure: vef1a7um9Dw/9Yqw/7S2cCbiOaus1kKJPCmOsR6wQ7gtQlTsRcAbPU97DbzxclDnCNoF35mhXzY2OnWfDMwsBQShy6dE+qZmy/Gg39iByvnco2Zafq0d/OGzJRxse3RzI0PkWX/SeYMlxHufStNd7T75M9A/yi/a67vAa58voHcAhbx6jpj3HeiwjoU6XXMrneJXCXa4FRYjG4AkT8hfeOFVlAYkFSdzB4k2vdc1UuW3JhPiFAlos3LswPXAtrs/w3oq7/ct8Xbvzvad2D800XTjgGdNsgOwjtMysNQKvlGwWpD0r+2mEX8c5AFFMejk6G9VsxCF1pG9H5fgwQqyXR2zpChaP+g4Sa3rM4Ku0L+Ub2W2wZfge8Tl+haypN0pU7TpqdMvJLX7KD89uIlRKcR0dNBDn5IVg8mBK9ybidAEV3jG0jVoq39KUWF3eNFcV7MSnHbQd9xRFjVqW09fnQnzLvf64z65qzNMswIAFxUIjviukWRRRacC6tKJQEct6g+64y1lJyn81si39O18QEL5Ia9OkJg2Fgs2YMHa313/IRJccE2ZjYrqerGwwQKb/CYNC7JpuqJsgywWY+HN7bESAR2vTr/FfwPupNfbJ7xkg6aWc8kDew7D33Ji1MlsC4IJjscGBc1gZhvv4ltPjYWjBho9Ps7ZzO6p4ix5pY4=
+  on:
+    repo: mdowds/nearbyhouseprices-update
